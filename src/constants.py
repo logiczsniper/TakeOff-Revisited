@@ -1,5 +1,8 @@
 class Constants:
 
+    # Title
+    TITLE = "TakeOff"
+
     # Colours
     GREEN = (113, 148, 41)
     DARK_GREEN = (34, 139, 34)
@@ -19,3 +22,9 @@ class Constants:
     # Paths
     BASE_IMAGE_PATH = "images/{}/{}.png"
     BASE_SOUND_PATH = "sounds/{}/{}.ogg"
+
+    # Window Characteristics
+    WINDOW_WIDTH = 400
+    WINDOW_HEIGHT = 400
+    WINDOW_ICON = "images/icon.png"
+    FPS = 40

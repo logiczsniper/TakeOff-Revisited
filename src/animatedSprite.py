@@ -1,17 +1,19 @@
 from pygame.sprite import Sprite
+from pygame.mask import from_surface
 from pygame import Rect
 
 
 class AnimatedSprite(Sprite):
     def __init__(self, *groups):
         super().__init__(*groups)
-        self.sheet, self.image = None, None
+        self.sheet, self.image, self.mask = None, None, None
         self.frame = 0
 
     def update(self, current_states):
 
         self.clip(current_states)
         self.image = self.sheet.subsurface(self.sheet.get_clip())
+        self.mask = from_surface(self.image)
 
     def get_frame(self, frame_set):
         self.frame += 1

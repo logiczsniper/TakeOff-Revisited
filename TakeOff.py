@@ -3,6 +3,13 @@
 Logan Czernel
 """
 
-from constants import Constants
+from game import Game
+from pygame import init, quit
 
 
+if __name__ == "__main__":
+
+    init()
+    new_game = Game()
+    new_game.run()
+    quit()
