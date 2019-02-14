@@ -20,16 +20,16 @@ class Resources:
     def __init__(self):
         # Images
         self.ICON = image.load(Constants.WINDOW_ICON).convert_alpha()
-        self.ROCKET_SHEET = self.load_image("sprites", "spaceshipdefault")
+        self.ROCKET_SHEET = self.load_image("sprites", "rocket_sheet")
 
-        self.TITLE_BG = self.load_image("backgrounds", "introbg")
-        self.VICTORY_BG = self.load_image("backgrounds", "endbg")
+        self.TITLE_BG = self.load_image("backgrounds", "intro")
+        self.VICTORY_BG = self.load_image("backgrounds", "victory")
         self.CRASH_BG = self.load_image("backgrounds", "crashed")
-        self.PAUSE_BG = self.load_image("backgrounds", "bgpaused")
-        self.MIDLEVEL_BG = self.load_image("backgrounds", "levelbg")
-        self.FIRST_BG = self.load_image("backgrounds", "levelone")
-        self.SECOND_BG = self.load_image("backgrounds", "leveltwo")
-        self.THIRD_BG = self.load_image("backgrounds", "levelthree")
+        self.PAUSE_BG = self.load_image("backgrounds", "paused")
+        self.MIDLEVEL_BG = self.load_image("backgrounds", "mid_level")
+        self.FIRST_BG = self.load_image("backgrounds", "level_one")
+        self.SECOND_BG = self.load_image("backgrounds", "level_two")
+        self.THIRD_BG = self.load_image("backgrounds", "level_three")
 
         # Sounds
         pass
