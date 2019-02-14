@@ -1,16 +1,30 @@
 from resources import Resources
+from pygame import event as pg_event, display, QUIT, quit as pg_quit, KEYDOWN
+from time import sleep
+from constants import Constants
+from sys import exit
 
 
 class SceneBase:
     def __init__(self):
         self.next = self
+        self.y = 0
         self.resources = Resources()
 
     def render(self, screen):
         pass
 
+    def display_scrolling_background(self, screen, image, speed):
+        rel_y = self.y % image.get_rect().height
+        screen.blit(image, (0, rel_y - image.get_rect().height))
+        if rel_y < Constants.WINDOW_HEIGHT:
+            screen.blit(image, (0, rel_y))
+        self.y += speed
+        display.update()
+
     def switch_to_scene(self, next_scene):
         self.next = next_scene
+        return True
 
     def terminate(self):
         self.switch_to_scene(None)
@@ -22,6 +36,25 @@ class TitleScene(SceneBase):
 
     def render(self, screen):
         screen.blit(self.resources.TITLE_BG, (0, 0))
+        screen.blit(Constants.FONT.render("Press anywhere to play!", True, Constants.BLACK),
+                    (Constants.WINDOW_WIDTH / 2 - 135, Constants.WINDOW_HEIGHT / 1.15))
+
+        while True:
+
+            for event in pg_event.get():
+
+                if event.type == QUIT:
+                    pg_quit()
+                    exit()
+
+                if event.type == KEYDOWN:
+                    self.switch_to_scene(FirstLevelScene())
+                    break
+            else:
+                display.update()
+                continue
+
+            break
 
 
 class VictoryScene(SceneBase):
@@ -30,6 +63,23 @@ class VictoryScene(SceneBase):
 
     def render(self, screen):
         screen.blit(self.resources.VICTORY_BG, (0, 0))
+        screen.blit(Constants.FONT.render("Press anywhere to quit!", True, Constants.BLACK),
+                    (Constants.WINDOW_WIDTH / 2 - 135, Constants.WINDOW_HEIGHT / 1.15))
+
+        while True:
+
+            for event in pg_event.get():
+
+                if event.type == QUIT or event.type == KEYDOWN:
+                    pg_quit()
+                    exit()
+                    break
+
+            else:
+                display.update()
+                continue
+
+            break
 
 
 class CrashScene(SceneBase):
@@ -38,6 +88,23 @@ class CrashScene(SceneBase):
 
     def render(self, screen):
         screen.blit(self.resources.CRASH_BG, (0, 0))
+        screen.blit(Constants.FONT.render("Press anywhere to quit!", True, Constants.BLACK),
+                    (Constants.WINDOW_WIDTH / 2 - 135, Constants.WINDOW_HEIGHT / 1.15))
+
+        while True:
+
+            for event in pg_event.get():
+
+                if event.type == QUIT or event.type == KEYDOWN:
+                    pg_quit()
+                    exit()
+                    break
+
+            else:
+                display.update()
+                continue
+
+            break
 
 
 class PauseScene(SceneBase):
@@ -46,6 +113,26 @@ class PauseScene(SceneBase):
 
     def render(self, screen):
         screen.blit(self.resources.PAUSE_BG, (0, 0))
+        screen.blit(Constants.FONT.render("Press anywhere to continue!", True, Constants.BLACK),
+                    (Constants.WINDOW_WIDTH / 2 - 150, Constants.WINDOW_HEIGHT / 1.15))
+
+        while True:
+
+            for event in pg_event.get():
+
+                if event.type == QUIT:
+                    pg_quit()
+                    exit()
+
+                if event.type == KEYDOWN:
+                    self.switch_to_scene(FirstLevelScene())
+                    break
+
+            else:
+                display.update()
+                continue
+
+            break
 
 
 class MidLevelScene(SceneBase):
@@ -54,6 +141,10 @@ class MidLevelScene(SceneBase):
 
     def render(self, screen):
         screen.blit(self.resources.MIDLEVEL_BG, (0, 0))
+        screen.blit(Constants.FONT.render("Next Level", True, Constants.BLACK),
+                    (Constants.WINDOW_WIDTH / 2 - 30, Constants.WINDOW_HEIGHT / 2))
+        display.update()
+        sleep(4)
 
 
 class FirstLevelScene(SceneBase):
@@ -61,7 +152,7 @@ class FirstLevelScene(SceneBase):
         SceneBase.__init__(self)
 
     def render(self, screen):
-        screen.blit(self.resources.FIRST_BG, (0, 0))
+        self.display_scrolling_background(screen, self.resources.FIRST_BG, 0.5)
 
 
 class SecondLevelScene(SceneBase):
@@ -69,7 +160,7 @@ class SecondLevelScene(SceneBase):
         SceneBase.__init__(self)
 
     def render(self, screen):
-        screen.blit(self.resources.SECOND_BG, (0, 0))
+        self.display_scrolling_background(screen, self.resources.SECOND_BG, 1)
 
 
 class ThirdLevelScene(SceneBase):
@@ -77,4 +168,4 @@ class ThirdLevelScene(SceneBase):
         SceneBase.__init__(self)
 
     def render(self, screen):
-        screen.blit(self.resources.THIRD_BG, (0, 0))
+        self.display_scrolling_background(screen, self.resources.THIRD_BG, 1.5)
