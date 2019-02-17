@@ -15,7 +15,13 @@ class Game:
         self.rocket_group = GroupSingle()
         self.rocket = Rocket((20, 20), self.rocket_group)
         self.all_sprites = Group(self.rocket, self.enemies)
-        self.active_scene = TitleScene()
+
+        # Create loop scene that will function as the title screen
+        self.active_scene = StaticScene(self.resources.TITLE_BG, "play", Constants.WINDOW_WIDTH / 2 - 180)
+
+        # Must set the on click lambda after creation as it needs access to switch_to_scene
+        self.active_scene.set_on_click(
+            lambda: self.active_scene.switch_to_scene(LevelScene(self.resources.FIRST_BG, 0.5)))
         self.altitude_text = ""
 
         self.done = False
@@ -36,13 +42,12 @@ class Game:
                 self.done = True
             elif event.type == MOUSEMOTION:
                 self.rocket.rect.center = event.pos
+            elif event.type == MOUSEBUTTONDOWN:
 
-            try:
-                # Event is not always a key down, so event does not always have attribute 'key'
-                if event.type == KEYDOWN and event.key == K_ESCAPE and not isinstance(self.active_scene, PauseScene):
-                    self.active_scene = PauseScene(self.active_scene)
-            except AttributeError:
-                pass
+                # Create loop scene that will function as a pause screen, already have access to switch_to_scene
+                self.active_scene = StaticScene(self.resources.PAUSE_BG, "resume", Constants.WINDOW_WIDTH / 2 - 180,
+                                                lambda: self.active_scene.switch_to_scene(
+                                                  self.active_scene.current_level), self.active_scene)
 
     def update(self):
 
@@ -60,16 +65,20 @@ class Game:
         elif self.rocket.elevation == 2000:
             self.increment_level(self.resources.THIRD_BG, 1.5)
         elif self.rocket.elevation == 3000:
-            self.active_scene = EndScene(self.resources.VICTORY_BG, "Press anywhere to quit!",
-                                         Constants.WINDOW_WIDTH / 2 - 180)
+
+            # Create loop scene that will function as a victory screen, already have access to switch_to_scene
+            self.active_scene = StaticScene(self.resources.VICTORY_BG, "quit", Constants.WINDOW_WIDTH / 2 - 170,
+                                            lambda: quit())
 
         # Update rocket
         self.rocket.handle_event()
 
         # Check for collisions
         if sprite.spritecollide(self.rocket, self.enemies, False, sprite.collide_mask):
-            self.active_scene = EndScene(self.resources.CRASH_BG, "Press anywhere to quit!",
-                                         Constants.WINDOW_WIDTH / 2 - 180)
+
+            # Create loop scene that will function as a loss screen, already have access to switch_to_scene
+            self.active_scene = StaticScene(self.resources.CRASH_BG, "quit", Constants.WINDOW_WIDTH / 2 - 170,
+                                            lambda: quit())
         else:
             pass
 

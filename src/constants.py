@@ -9,8 +9,9 @@ class Constants:
     # Title
     TITLE = "TakeOff"
 
-    # Universal Font
+    # Text
     FONT = Font("font/PressStart2P.ttf", 16)
+    MESSAGE = "Click to {}!"
 
     # Colours
     GREEN = (113, 148, 41)
