@@ -21,6 +21,12 @@ class SceneBase(ABC):
         screen.blit(Constants.FONT.render(text, True, Constants.BLACK),
                     (text_x, Constants.WINDOW_HEIGHT / 1.15))
 
+    @staticmethod
+    def check_quit(event):
+        if event.type == QUIT:
+            pg_quit()
+            exit()
+
     def switch_to_scene(self, next_scene):
         self.next = next_scene
         return True
@@ -40,9 +46,7 @@ class TitleScene(SceneBase):
 
             for event in pg_event.get():
 
-                if event.type == QUIT:
-                    pg_quit()
-                    exit()
+                self.check_quit(event)
 
                 if event.type == KEYDOWN:
                     self.switch_to_scene(LevelScene(self.resources.FIRST_BG, 0.5))
@@ -67,9 +71,7 @@ class PauseScene(SceneBase):
 
             for event in pg_event.get():
 
-                if event.type == QUIT:
-                    pg_quit()
-                    exit()
+                self.check_quit(event)
 
                 if event.type == KEYDOWN and event.key == K_ESCAPE:
                     self.switch_to_scene(self.current_level)
@@ -109,9 +111,7 @@ class EndScene(SceneBase):
 
             for event in pg_event.get():
 
-                if event.type == QUIT or event.type == KEYDOWN:
-                    pg_quit()
-                    exit()
+                self.check_quit(event)
 
             else:
                 display.update()

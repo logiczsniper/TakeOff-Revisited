@@ -6,22 +6,14 @@ from resources import Resources
 
 class Rocket(AnimatedSprite):
     def __init__(self, position, *groups):
-        super().__init__(*groups)
         self.sheet = Resources().ROCKET_SHEET
         self.sheet.set_clip(Rect(0, 0, 56, 148))
-        self.image = self.sheet.subsurface(self.sheet.get_clip())
-        self.rect = self.image.get_rect()
-        self.rect.topleft = position
-        self.velocity = 5
-        self.acceleration = 0.5
         self.elevation = 0
-
-        # TODO frames
         self.frames = {0: (0, 0, 56, 149), 1: (56, 0, 56, 164), 2: (112, 0, 56, 149), 3: (168, 0, 56, 132)}
 
-    def handle_event(self):
+        super().__init__(position, self.sheet, *groups)
 
-        # TODO rotate rocket based on direction
+    def handle_event(self):
 
         if self.rect.right > Constants.WINDOW_WIDTH:
             self.rect.right = Constants.WINDOW_WIDTH

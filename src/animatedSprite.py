@@ -4,10 +4,14 @@ from pygame import Rect
 
 
 class AnimatedSprite(Sprite):
-    def __init__(self, *groups):
+    def __init__(self, position, sheet, *groups):
         super().__init__(*groups)
-        self.sheet, self.image, self.mask = None, None, None
+        self.sheet = sheet
+        self.image = self.sheet.subsurface(self.sheet.get_clip())
+        self.rect = self.image.get_rect()
+        self.rect.topleft = position
         self.frame = 0
+        self.mask = None
 
     def update(self, current_states):
 
