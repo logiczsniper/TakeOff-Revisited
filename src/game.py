@@ -1,9 +1,8 @@
-from constants import Constants
-from playerSprite import Rocket
+from pygame import time, event as py_event, sprite, MOUSEMOTION
 from pygame.sprite import GroupSingle, Group
-from pygame import time, event as py_event, sprite, K_ESCAPE, sysfont, MOUSEMOTION
+
+from playerSprite import Rocket
 from scenes import *
-from resources import Resources
 
 
 class Game:
@@ -40,8 +39,8 @@ class Game:
 
             try:
                 # Event is not always a key down, so event does not always have attribute 'key'
-                if event.key == K_ESCAPE:
-                    self.active_scene = PauseScene()
+                if event.type == KEYDOWN and event.key == K_ESCAPE and not isinstance(self.active_scene, PauseScene):
+                    self.active_scene = PauseScene(self.active_scene)
             except AttributeError:
                 pass
 
@@ -57,17 +56,11 @@ class Game:
 
         # Check if the user has surpassed their level via elevation
         if self.rocket.elevation == 1000:
-            self.active_scene = MidLevelScene()
-            self.active_scene.render(self.screen)
-            self.active_scene = SecondLevelScene()
+            self.increment_level(SecondLevelScene())
         elif self.rocket.elevation == 2000:
-            self.active_scene = MidLevelScene()
-            self.active_scene.render(self.screen)
-            self.active_scene = ThirdLevelScene()
+            self.increment_level(ThirdLevelScene())
         elif self.rocket.elevation == 3000:
             self.active_scene = VictoryScene()
-
-        self.active_scene = self.active_scene.next
 
         # Update rocket
         self.rocket.handle_event()
@@ -78,7 +71,14 @@ class Game:
         else:
             pass
 
-    def draw(self):
+        self.active_scene = self.active_scene.next
+
+    def increment_level(self, next_level_scene):
+        self.active_scene = MidLevelScene()
         self.active_scene.render(self.screen)
-        self.screen.blit(self.altitude_text, (1, 1))
+        self.active_scene = next_level_scene
+
+    def draw(self):
+        self.active_scene.render(screen=self.screen)
+        self.screen.blit(self.altitude_text, (3, 3))
         self.all_sprites.draw(self.screen)

@@ -1,4 +1,4 @@
-from pygame.sysfont import SysFont
+from pygame.font import Font
 from pygame import init
 
 
@@ -10,7 +10,7 @@ class Constants:
     TITLE = "TakeOff"
 
     # Universal Font
-    FONT = SysFont("arial", 30)
+    FONT = Font("font/PressStart2P.ttf", 16)
 
     # Colours
     GREEN = (113, 148, 41)
