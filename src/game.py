@@ -56,27 +56,29 @@ class Game:
 
         # Check if the user has surpassed their level via elevation
         if self.rocket.elevation == 1000:
-            self.increment_level(SecondLevelScene())
+            self.increment_level(self.resources.SECOND_BG, 1)
         elif self.rocket.elevation == 2000:
-            self.increment_level(ThirdLevelScene())
+            self.increment_level(self.resources.THIRD_BG, 1.5)
         elif self.rocket.elevation == 3000:
-            self.active_scene = VictoryScene()
+            self.active_scene = EndScene(self.resources.VICTORY_BG, "Press anywhere to quit!",
+                                         Constants.WINDOW_WIDTH / 2 - 180)
 
         # Update rocket
         self.rocket.handle_event()
 
         # Check for collisions
         if sprite.spritecollide(self.rocket, self.enemies, False, sprite.collide_mask):
-            self.active_scene = CrashScene()
+            self.active_scene = EndScene(self.resources.CRASH_BG, "Press anywhere to quit!",
+                                         Constants.WINDOW_WIDTH / 2 - 180)
         else:
             pass
 
         self.active_scene = self.active_scene.next
 
-    def increment_level(self, next_level_scene):
+    def increment_level(self, next_background, next_scroll_speed):
         self.active_scene = MidLevelScene()
         self.active_scene.render(self.screen)
-        self.active_scene = next_level_scene
+        self.active_scene = LevelScene(next_background, next_scroll_speed)
 
     def draw(self):
         self.active_scene.render(screen=self.screen)
