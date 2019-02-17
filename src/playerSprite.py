@@ -7,9 +7,9 @@ from resources import Resources
 class Rocket(AnimatedSprite):
     def __init__(self, position, *groups):
         self.sheet = Resources().ROCKET_SHEET
-        self.sheet.set_clip(Rect(0, 0, 56, 148))
+        self.sheet.set_clip(Rect(0, 0, 55, 103))
         self.elevation = 0
-        self.frames = {0: (0, 0, 56, 149), 1: (56, 0, 56, 164), 2: (112, 0, 56, 149), 3: (168, 0, 56, 132)}
+        self.frames = Constants.ROCKET_FRAMES
 
         super().__init__(position, self.sheet, *groups)
 

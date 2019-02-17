@@ -11,7 +11,7 @@ class AnimatedSprite(Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = position
         self.frame = 0
-        self.mask = None
+        self.mask = from_surface(self.image)
 
     def update(self, current_states):
 

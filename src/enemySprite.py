@@ -4,19 +4,25 @@ from constants import Constants
 
 
 class Enemy(AnimatedSprite):
-    def __init__(self, sheet, position, *groups):
+    def __init__(self, sheet, direction, position, speed, frames, y_change, *groups):
         self.sheet = sheet
-        # TODO: initial rect
-        self.sheet.set_clip(Rect())
+        self.sheet.set_clip(Rect(frames.get(1)))
         self.elevation = 0
-        self.left_frames = {0: (0, 0, 56, 149), 1: (56, 0, 56, 164), 2: (112, 0, 56, 149), 3: (168, 0, 56, 132)}
-        self.right_frames = {0: (0, 0, 56, 149), 1: (56, 0, 56, 164), 2: (112, 0, 56, 149), 3: (168, 0, 56, 132)}
+        self.y_change = y_change
+        self.direction = direction
+
+        # Adds direction via determining if speed should be negative, hence velocity
+        self.velocity = speed if self.direction == "right" else -speed
+        self.frames = frames
 
         super().__init__(position, self.sheet, *groups)
 
     def handle_event(self):
+        if self.direction == "right" and self.rect.left > Constants.WINDOW_WIDTH or \
+                self.direction == "left" and self.rect.right < 0:
+            self.kill()
+        else:
+            self.rect.x += self.velocity
+            self.rect.y += self.y_change
 
-        # TODO: enemy logic to have them continue in their starting direction
-
-        # TODO: logic to determine which frames to use (based on direction)
         self.update(self.frames)

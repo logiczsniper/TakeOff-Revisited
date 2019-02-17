@@ -20,7 +20,10 @@ class Resources:
     def __init__(self):
         # Images
         self.ICON = image.load(Constants.WINDOW_ICON).convert_alpha()
-        self.ROCKET_SHEET = self.load_image("sprites", "rocket_sheet")
+        self.ROCKET_SHEET = self.load_image("sprites", "rocket")
+        self.BIRD_SHEET = self.load_image("sprites", "bird")
+        self.HELICOPTER_SHEET = self.load_image("sprites", "helicopter")
+        self.SATELLITE_SHEET = self.load_image("sprites", "satellite")
 
         self.TITLE_BG = self.load_image("backgrounds", "intro")
         self.VICTORY_BG = self.load_image("backgrounds", "victory")
