@@ -71,32 +71,32 @@ class Game:
 
             # Starting random direction (facing)
             direction = choice(["left", "right"])
+            pos_y = randint(-80, Constants.WINDOW_HEIGHT - 360)
 
             if self.current_enemy == self.resources.BIRD_SHEET:
-                frames = Constants.BIRD_FRAMES.get(direction)
-                speed = 2.2
-                pos_x = Constants.WINDOW_WIDTH + 100 if direction == "left" else -100
-                y_change = 2
+
                 sound_effect = self.resources.BIRD_SOUND
+                Enemy(self.current_enemy, direction,
+                      (Constants.WINDOW_WIDTH + 100 if direction == "left" else -100, pos_y), 2.2,
+                      Constants.BIRD_FRAMES.get(direction), 2, self.enemies, self.all_sprites)
+
             elif self.current_enemy == self.resources.HELICOPTER_SHEET:
-                frames = Constants.HELICOPTER_FRAMES.get(direction)
-                speed = 3.1
-                pos_x = Constants.WINDOW_WIDTH + 160 if direction == "left" else -160
-                y_change = 3
+
                 sound_effect = self.resources.HELICOPTER_SOUND
+                Enemy(self.current_enemy, direction,
+                      (Constants.WINDOW_WIDTH + 160 if direction == "left" else -160, pos_y), 3.1,
+                      Constants.HELICOPTER_FRAMES.get(direction), 3, self.enemies, self.all_sprites)
+
             elif self.current_enemy == self.resources.SATELLITE_SHEET:
-                frames = Constants.SATELLITE_FRAMES.get(direction)
-                speed = 4
-                pos_x = Constants.WINDOW_WIDTH + 145 if direction == "left" else -145
-                y_change = 4
+
                 sound_effect = self.resources.SATELLITE_SOUND
+                Enemy(self.current_enemy, direction,
+                      (Constants.WINDOW_WIDTH + 145 if direction == "left" else -145, pos_y), 4,
+                      Constants.SATELLITE_FRAMES.get(direction), 4, self.enemies, self.all_sprites)
+
             else:
                 raise Exception("game.current_enemy incorrectly set")
 
-            pos_y = randint(-50, Constants.WINDOW_HEIGHT - 350)
-
-            Enemy(self.current_enemy, direction, (pos_x, pos_y), speed, frames, y_change, self.enemies,
-                  self.all_sprites)
             sound_effect.play()
 
         # Update elevation
@@ -109,6 +109,8 @@ class Game:
             self.increment_level(self.resources.SECOND_BG, 3)
         elif self.rocket.elevation == 2000:
             self.increment_level(self.resources.THIRD_BG, 4)
+        elif self.rocket.elevation == 2500:
+            self.num_of_enemies += 1
         elif self.rocket.elevation == 3000:
 
             # Play victory sound
@@ -123,13 +125,11 @@ class Game:
             active_sprite.handle_event()
 
             if isinstance(active_sprite, Rocket):
-
                 # Play rocket sound every update
                 self.resources.ROCKET_SOUND.play()
 
         # Check for collisions
         if sprite.spritecollide(self.rocket, self.enemies, False, sprite.collide_mask):
-
             # Play crash sound
             self.resources.CRASH_SOUND.play()
 
