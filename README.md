@@ -15,13 +15,13 @@ Previously, rectangles were drawn around each sprite and those were used in dete
 or not the player collided with, for example, an enemy. This produced very frustrating deaths
 that appeared unfair as what you saw did not collide, but the rectangles did. Now, masks are
 created over the non-transparent parts of each sprite and those are used for collisions.
-3. Animation, animation, animation.
+3. Animation, animation, animation. <br>
 In the first 'TakeOff', the only animation detectable was the change in size of the flame every time
 you press an up or down arrow key and a change in rotation of the rocket when you hit a left
 or right arrow key. This change is significant- in this new 'TakeOff', every sprite is well
 animated to appear as a regular game should, as well as that the background is downward scrolling
 which better portrays the effect that you are indeed flying upwards.
-4. Simple controls.
+4. Simple controls. <br>
 In this version of the game, you only need to use the mouse throughout the entire game. Depending
 on which Scene the user is in, the buttons on the mouse play a different role, for example, on the
 title scene a left-click starts the game and while playing, a click induces the pause scene.
