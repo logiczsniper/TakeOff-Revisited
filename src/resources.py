@@ -4,7 +4,7 @@ from pygame import image, mixer
 
 class Resources:
     """
-    A single class that holds all of the game assets
+    A single class that holds all of the game assets.
     """
 
     @staticmethod
@@ -13,11 +13,11 @@ class Resources:
         Uses the image.load method to load an image from a path that is created by formatting the base path in Constants
         with the param folder and name.
 
-        :param folder: the name of the folder that contains the image
-        :param name: the name of the file of the image
+        :param folder: the name of the folder that contains the image.
+        :param name: the name of the file of the image.
         :type: str
 
-        :return: image that has been loaded
+        :return: image that has been loaded.
         :rtype: Surface
         """
 
@@ -30,14 +30,14 @@ class Resources:
         Uses the mixer.Sound class to create a sound object using the path that is created by formatting the base path
         in Constants with the folder and name parameters. Then sets the volume of the sound to the given volume param.
 
-        :param folder: the name of the folder that contains the sound
-        :param name: the name of the file of the sound
+        :param folder: the name of the folder that contains the sound.
+        :param name: the name of the file of the sound.
         :type: str
 
-        :param volume: the volume level that the sound will be set to
+        :param volume: the volume level that the sound will be set to.
         :type: int
 
-        :return: the sound that has been loaded and volume adjusted
+        :return: the sound that has been loaded and volume adjusted.
         :rtype: Sound
         """
 
@@ -50,7 +50,7 @@ class Resources:
         Loads all of the images and sounds.
         """
 
-        # Images
+        # Images.
         self.ICON = image.load(Constants.WINDOW_ICON).convert_alpha()
         self.ROCKET_SHEET = self.load_image("sprites", "rocket")
         self.BIRD_SHEET = self.load_image("sprites", "bird")
@@ -66,7 +66,7 @@ class Resources:
         self.SECOND_BG = self.load_image("backgrounds", "level_two")
         self.THIRD_BG = self.load_image("backgrounds", "level_three")
 
-        # Sounds
+        # Sounds.
         self.ROCKET_SOUND = self.load_sound("effects", "rocket", 0.15)
         self.BIRD_SOUND = self.load_sound("effects", "bird", 0.6)
         self.HELICOPTER_SOUND = self.load_sound("effects", "helicopter", 0.6)

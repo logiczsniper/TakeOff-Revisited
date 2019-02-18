@@ -16,44 +16,44 @@ class Game:
 
     def __init__(self):
 
-        # Set up display, gain access to all the resources, make these resources accessible throughout the class
+        # Set up display, gain access to all the resources, make these resources accessible throughout the class.
         self.screen = display.set_mode((Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT))
         display.set_caption('TakeOff')
         self.resources = Resources()
         display.set_icon(self.resources.ICON)
 
-        # Set up groups
+        # Set up groups.
         self.enemies = Group()
         self.rocket_group = GroupSingle()
 
-        # Create the player (rocket)
+        # Create the player (rocket).
         self.rocket = Rocket((20, 20), self.rocket_group)
 
         self.all_sprites = Group(self.rocket, self.enemies)
 
-        # Create a generator so I can use the next() to get the next enemy that will be displayed
+        # Create a generator so I can use the next() to get the next enemy that will be displayed.
         self.current_enemy_generator = self.generate_sprite_sheet()
         self.current_enemy = next(self.current_enemy_generator)
 
-        # Create loop scene that will function as the title screen
+        # Create loop scene that will function as the title screen.
         self.active_scene = StaticScene(self.resources.TITLE_BG, Constants.MESSAGE.format("play"),
                                         Constants.WINDOW_WIDTH / 2 - 110)
 
-        # Must set the on click lambda after creation as it needs access to switch_to_scene
+        # Must set the on click lambda after creation as it needs access to switch_to_scene.
         self.active_scene.set_on_click(
             lambda: self.active_scene.switch_to_scene(LevelScene(self.resources.FIRST_BG, 2)))
 
-        # Set initial values for the altitude text and the number of enemies
+        # Set initial values for the altitude text and the number of enemies.
         self.altitude_text = ""
         self.num_of_enemies = 2
 
-        # Init mixer, start playing background music
+        # Init mixer, start playing background music.
         mixer.init()
         mixer.music.load(Constants.BASE_SOUND_PATH.format("background", "background"))
         mixer.music.set_volume(0.5)
         mixer.music.play(-1)
 
-        # Set up loop, clock
+        # Set up loop, clock.
         self.done = False
         self.clock = time.Clock()
 
@@ -85,7 +85,7 @@ class Game:
                 self.rocket.rect.center = event.pos
             elif event.type == MOUSEBUTTONDOWN:
 
-                # Create loop scene that will function as a pause screen, already have access to switch_to_scene
+                # Create loop scene that will function as a pause screen, already have access to switch_to_scene.
                 self.active_scene = StaticScene(self.resources.PAUSE_BG, Constants.MESSAGE.format("resume"),
                                                 Constants.WINDOW_WIDTH / 2 - 120,
                                                 lambda: self.active_scene.switch_to_scene(
@@ -96,11 +96,11 @@ class Game:
         Apply core game logic including spawning enemies, detecting collisions and incrementing level.
         """
 
-        # Spawn enemies
+        # Spawn enemies.
         if len(self.enemies) < self.num_of_enemies and isinstance(self.active_scene,
                                                                   LevelScene) and self.rocket.elevation > 150:
 
-            # Starting random direction (facing)
+            # Starting random direction (facing).
             direction = choice(["left", "right"])
             pos_y = randint(-80, Constants.WINDOW_HEIGHT - 360)
 
@@ -130,47 +130,47 @@ class Game:
 
             sound_effect.play()
 
-        # Update elevation
+        # Update elevation.
         self.rocket.elevation += 1
         self.altitude_text = Constants.FONT.render("Altitude: " + str(self.rocket.elevation), True,
                                                    Constants.BLACK)
 
-        # Check if the user has surpassed their level via elevation
+        # Check if the user has surpassed their level via elevation.
         if self.rocket.elevation == 1000:
             self.increment_level(self.resources.SECOND_BG, 3)
         elif self.rocket.elevation == 2000:
             self.increment_level(self.resources.THIRD_BG, 4)
         elif self.rocket.elevation == 2500:
 
-            # Increment number of enemies for the final 500 km
+            # Increment number of enemies for the final 500 km.
             self.num_of_enemies += 1
         elif self.rocket.elevation == 3000:
 
-            # Play victory sound
+            # Play victory sound.
             self.resources.VICTORY_SOUND.play()
 
-            # Create loop scene that will function as a victory screen, already have access to switch_to_scene
+            # Create loop scene that will function as a victory screen, already have access to switch_to_scene.
             self.active_scene = StaticScene(self.resources.VICTORY_BG, Constants.MESSAGE.format("quit"),
                                             Constants.WINDOW_WIDTH / 2 - 110, lambda: quit())
 
-        # Update all sprites
+        # Update all sprites.
         for active_sprite in self.all_sprites:
             active_sprite.handle_event()
 
             if isinstance(active_sprite, Rocket):
-                # Play rocket sound every update
+                # Play rocket sound every update.
                 self.resources.ROCKET_SOUND.play()
 
-        # Check for collisions
+        # Check for collisions.
         if sprite.spritecollide(self.rocket, self.enemies, False, sprite.collide_mask):
-            # Play crash sound
+            # Play crash sound.
             self.resources.CRASH_SOUND.play()
 
-            # Create loop scene that will function as a loss screen, already have access to switch_to_scene
+            # Create loop scene that will function as a loss screen, already have access to switch_to_scene.
             self.active_scene = StaticScene(self.resources.CRASH_BG, Constants.MESSAGE.format("quit"),
                                             Constants.WINDOW_WIDTH / 2 - 110, lambda: quit())
 
-        # Update the active scene if changed
+        # Update the active scene if changed.
         self.active_scene = self.active_scene.next
 
     def increment_level(self, next_background, next_scroll_speed):
@@ -194,7 +194,7 @@ class Game:
 
     def kill_enemies(self):
         """
-        Kills all enemy sprites
+        Kills all enemy sprites.
         """
 
         for enemy in self.enemies:

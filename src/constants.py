@@ -1,18 +1,19 @@
 from pygame.font import Font
 from pygame import init
 
+# Initialize pygame.
 init()
 
 
 class Constants:
-    # Title
+    # Title.
     TITLE = "TakeOff"
 
-    # Text
+    # Text.
     FONT = Font("font/PressStart2P.ttf", 16)
     MESSAGE = "Click to {}!"
 
-    # Colours
+    # Colours.
     GREEN = (113, 148, 41)
     DARK_GREEN = (34, 139, 34)
 
@@ -28,21 +29,21 @@ class Constants:
     BLACK = (50, 50, 50)
     WHITE = (255, 255, 255)
 
-    # Paths
+    # Paths.
     BASE_IMAGE_PATH = "images/{}/{}.png"
     BASE_SOUND_PATH = "sounds/{}/{}.wav"
 
-    # Window Characteristics
+    # Window Characteristics.
     WINDOW_WIDTH = 400
     WINDOW_HEIGHT = 800
     WINDOW_ICON = "images/icon.png"
     FPS = 25
 
-    # Button Sizes
+    # Button Sizes.
     BUTTON_WIDTH = 100
     BUTTON_HEIGHT = 80
 
-    # Sprite Frames in the form -> {frame_count: (topleft.x, topleft.y, width, height), ...}
+    # Sprite Frames in the form -> {"direction": {frame_count: (topleft.x, topleft.y, width, height), ...}, ...}.
     ROCKET_FRAMES = {0: (0, 0, 55, 147), 1: (56, 0, 55, 163), 2: (112, 0, 55, 146), 3: (168, 0, 55, 131)}
     BIRD_FRAMES = {
         "right": {0: (0, 0, 63, 47), 1: (66, 0, 59, 41), 2: (0, 59, 60, 45), 3: (66, 0, 59, 41)},
