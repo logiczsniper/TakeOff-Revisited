@@ -30,7 +30,7 @@ class Constants:
 
     # Paths
     BASE_IMAGE_PATH = "images/{}/{}.png"
-    BASE_SOUND_PATH = "sounds/{}/{}.ogg"
+    BASE_SOUND_PATH = "sounds/{}/{}.wav"
 
     # Window Characteristics
     WINDOW_WIDTH = 400

@@ -13,8 +13,9 @@ class Resources:
 
     # Sound loader
     @staticmethod
-    def load_sound(folder, name):
+    def load_sound(folder, name, volume):
         loaded_sound = mixer.Sound(Constants.BASE_SOUND_PATH.format(folder, name))
+        loaded_sound.set_volume(volume)
         return loaded_sound
 
     def __init__(self):
@@ -35,4 +36,9 @@ class Resources:
         self.THIRD_BG = self.load_image("backgrounds", "level_three")
 
         # Sounds
-        pass
+        self.ROCKET_SOUND = self.load_sound("effects", "rocket", 0.15)
+        self.BIRD_SOUND = self.load_sound("effects", "bird", 0.6)
+        self.HELICOPTER_SOUND = self.load_sound("effects", "helicopter", 0.6)
+        self.SATELLITE_SOUND = self.load_sound("effects", "satellite", 0.6)
+        self.CRASH_SOUND = self.load_sound("effects", "crash", 0.8)
+        self.VICTORY_SOUND = self.load_sound("effects", "victory", 0.8)

@@ -1,4 +1,4 @@
-from pygame import time, event as py_event, sprite, MOUSEMOTION
+from pygame import time, event as py_event, sprite, MOUSEMOTION, mixer
 from pygame.sprite import GroupSingle, Group
 
 from random import choice, randint
@@ -30,6 +30,12 @@ class Game:
         self.active_scene.set_on_click(
             lambda: self.active_scene.switch_to_scene(LevelScene(self.resources.FIRST_BG, 2)))
         self.altitude_text = ""
+
+        # Init mixer, start playing background music
+        mixer.init()
+        mixer.music.load(Constants.BASE_SOUND_PATH.format("background", "background"))
+        mixer.music.set_volume(0.5)
+        mixer.music.play(-1)
 
         self.done = False
         self.clock = time.Clock()
@@ -71,16 +77,19 @@ class Game:
                 speed = 2.2
                 pos_x = Constants.WINDOW_WIDTH + 100 if direction == "left" else -100
                 y_change = 2
+                sound_effect = self.resources.BIRD_SOUND
             elif self.current_enemy == self.resources.HELICOPTER_SHEET:
                 frames = Constants.HELICOPTER_FRAMES.get(direction)
                 speed = 3.1
                 pos_x = Constants.WINDOW_WIDTH + 160 if direction == "left" else -160
                 y_change = 3
+                sound_effect = self.resources.HELICOPTER_SOUND
             elif self.current_enemy == self.resources.SATELLITE_SHEET:
                 frames = Constants.SATELLITE_FRAMES.get(direction)
                 speed = 4
                 pos_x = Constants.WINDOW_WIDTH + 145 if direction == "left" else -145
                 y_change = 4
+                sound_effect = self.resources.SATELLITE_SOUND
             else:
                 raise Exception("game.current_enemy incorrectly set")
 
@@ -88,6 +97,7 @@ class Game:
 
             Enemy(self.current_enemy, direction, (pos_x, pos_y), speed, frames, y_change, self.enemies,
                   self.all_sprites)
+            sound_effect.play()
 
         # Update elevation
         self.rocket.elevation += 1
@@ -101,6 +111,9 @@ class Game:
             self.increment_level(self.resources.THIRD_BG, 4)
         elif self.rocket.elevation == 3000:
 
+            # Play victory sound
+            self.resources.VICTORY_SOUND.play()
+
             # Create loop scene that will function as a victory screen, already have access to switch_to_scene
             self.active_scene = StaticScene(self.resources.VICTORY_BG, Constants.MESSAGE.format("quit"),
                                             Constants.WINDOW_WIDTH / 2 - 110, lambda: quit())
@@ -109,8 +122,17 @@ class Game:
         for active_sprite in self.all_sprites:
             active_sprite.handle_event()
 
+            if isinstance(active_sprite, Rocket):
+
+                # Play rocket sound every update
+                self.resources.ROCKET_SOUND.play()
+
         # Check for collisions
         if sprite.spritecollide(self.rocket, self.enemies, False, sprite.collide_mask):
+
+            # Play crash sound
+            self.resources.CRASH_SOUND.play()
+
             # Create loop scene that will function as a loss screen, already have access to switch_to_scene
             self.active_scene = StaticScene(self.resources.CRASH_BG, Constants.MESSAGE.format("quit"),
                                             Constants.WINDOW_WIDTH / 2 - 110, lambda: quit())
